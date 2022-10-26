@@ -1,9 +1,9 @@
 ## Usage
 
-First, install `` as a dependency:
+First, install `xc-sdk-react` as a dependency:
 
 ```shell
-npm install --save
+npm install --save xc-sdk-react
 ```
 
 ### Loading and initializing CC package
@@ -16,7 +16,7 @@ npm install --save
 
 ```react
 // Loading and initializing CC package
-import { initXC } from "";
+import { initXC } from "xc-sdk-react";
 
 // Class Components
 componentDidMount(){
@@ -48,7 +48,7 @@ useEffect(() => {
 ```
 // Sample usage of the package
 import { useState, useEffect } from "react";
-import { initXC } from "";
+import { initXC } from "xc-sdk-react";
 
 const initialState = {
   name: "",
