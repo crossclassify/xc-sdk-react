@@ -1,5 +1,7 @@
 const FingerprintJS = require("@fingerprintjs/fingerprintjs");
-import fp from "@fingerprintjs/fingerprintjs-pro";
+import FingerprintJSp from "@fingerprintjs/fingerprintjs-pro";
+
+const fpPromise_pro = FingerprintJSp.load({ apiKey: "nLvTePYiYEFERqTHoSZ7" });
 
 // Initialize the agent at application startup.
 const fpPromise = FingerprintJS.load();
@@ -7,7 +9,7 @@ const fpPromise = FingerprintJS.load();
 // const fpPromise_pro = import("https://fpcdn.io/v3/nLvTePYiYEFERqTHoSZ7").then(
 //   (FingerprintJS) => FingerprintJS.load()
 // );
-const fpPromise_pro = fp.load({ apiKey: "nLvTePYiYEFERqTHoSZ7" });
+// const fpPromise_pro = fp.load({ apiKey: "nLvTePYiYEFERqTHoSZ7" });
 var xApiKey = "";
 // const SERVER_API_KEY = "iJhQgk9AG5w91l0bmSH1";
 function piwikJs() {
