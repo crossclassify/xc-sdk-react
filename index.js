@@ -5690,12 +5690,14 @@ export function initXC(siteId, apiKey) {
     fpPromise_pro
       .then((fp) => fp.get())
       .then((result) => {
+        console.log(result.visitorId);
         initMatomo(result.visitorId, siteId);
       });
   } catch (error) {
     fpPromise
       .then((fp) => fp.get())
       .then((result) => {
+        console.log(result.visitorId);
         initMatomo(result.visitorId, siteId);
       });
   }
