@@ -5693,19 +5693,15 @@ function pushSubmit(event) {
 
 export function initXC(siteId, apiKey) {
   xApiKey = apiKey;
-
   fpPromise_pro
     .then((fp) => fp.get())
     .then((result) => {
-      console.log(result.visitorId);
       initMatomo(result.visitorId, siteId);
     })
     .catch((err) => {
-      console.log(err);
       fpPromise
         .then((fp) => fp.get())
         .then((result) => {
-          console.log(result.visitorId);
           initMatomo(result.visitorId, siteId);
         });
     });
