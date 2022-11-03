@@ -8,7 +8,7 @@ npm install --save xc-sdk-react
 
 [Skip to Complete example](#Complete-Example)
 
-### Loading and initializing CC package
+### Loading and initializing XC package
 
 1. Call initXC(your_site_id, your_api_key) in the ComponentDidMount for any component which you want to track its form.
    - initXC only loads and initialize our library, for adding trackers follow bellow steps

@@ -1,7 +1,8 @@
 const FingerprintJS = require("@fingerprintjs/fingerprintjs");
-
+const FingerprintJS_pro = require("@fingerprintjs/fingerprintjs-pro");
 // Initialize the agent at application startup.
 const fpPromise = FingerprintJS.load();
+const fpPromise_pro = FingerprintJS_pro.load();
 var xApiKey = "";
 // const SERVER_API_KEY = "iJhQgk9AG5w91l0bmSH1";
 function piwikJs() {
@@ -5685,11 +5686,19 @@ function pushSubmit(event) {
 
 export function initXC(siteId, apiKey) {
   xApiKey = apiKey;
-  fpPromise
-    .then((fp) => fp.get())
-    .then((result) => {
-      initMatomo(result.visitorId, siteId);
-    });
+  try {
+    fpPromise_pro
+      .then((fp) => fp.get())
+      .then((result) => {
+        initMatomo(result.visitorId, siteId);
+      });
+  } catch (error) {
+    fpPromise
+      .then((fp) => fp.get())
+      .then((result) => {
+        initMatomo(result.visitorId, siteId);
+      });
+  }
 
   for (const form of getAllFormsInThisPage()) {
     for (let element of form.querySelectorAll(
