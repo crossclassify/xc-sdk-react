@@ -5695,6 +5695,7 @@ export function initXC(siteId, apiKey) {
       initMatomo(result.visitorId, siteId);
     })
     .catch((err) => {
+      console.log(err)
       fpPromise
         .then((fp) => fp.get())
         .then((result) => {
