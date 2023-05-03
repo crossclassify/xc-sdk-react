@@ -40,7 +40,7 @@ useEffect(() => {
    - Note: DO NOT USE SPACE OR DASH FOR "SIGNUP" (sign-up and sign up are not allowed)
 6. Add custom-attribute="include-form-tracking" to the form which you want to track.
 
-```
+```xml
 <form
   name="must-contain-signup"
   custom-attribute="include-form-tracking"
@@ -53,7 +53,7 @@ useEffect(() => {
    - NOTE: You must add custom-attribute="include-content-tracking" for the email input
    - NOTE: Its ok to not including content of private fields like password, etc.
 
-```
+```xml
 <input
   custom-attribute="include-content-tracking"
   type="text"
@@ -64,13 +64,13 @@ useEffect(() => {
 8. Add custom-attribute="form-submit" or type="submit" to the submit button.
 9. Use onSubmit={submitHandler} for you button NOT onClick={clickHandler}.
 
-```
+```xml
 <button custom-attribute="form-submit">submit</button>
 ```
 
 ### Complete Example
 
-```
+```react
 // Sample usage of the package
 import { useState, useEffect } from "react";
 import { initXC } from "xc-sdk-react";
@@ -174,7 +174,7 @@ export default Form;
 - If you are not using pure HTML tags (form, input and button), consider adding the mentioned attributes to the rendered HTML tags like using "inputProps".
   Pay attention to the following example of Matrial UI (MUI) "TextField".
 
-```
+```xml
    //simple MUI "Form" tracking integration
   <Box
     sx={{
