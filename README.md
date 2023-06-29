@@ -8,12 +8,12 @@ npm install --save xc-sdk-react
 
 [Skip to Complete example](#Complete-Example)
 
-### Loading and initializing XC package
+### Step 1: Loading and initializing XC package
 
-1. Call initXC(your_site_id, your_api_key) in the ComponentDidMount for any component which you want to track its form.
+1-1. Call initXC(your_site_id, your_api_key) in the ComponentDidMount for any component which you want to track its form.
    - initXC only loads and initialize our library, for adding trackers follow bellow steps
-2. You can call initXC(your_site_id, your_api_key) in the index.js or app.js once.
-3. Pass your site_id and api_key to initXC(your_site_id, your_api_key).
+1-2. You can call initXC(your_site_id, your_api_key) in the index.js or app.js once.
+1-3. Pass your site_id and api_key to initXC(your_site_id, your_api_key).
    - You can get your_site_id and your_api_key from app.crossclassify.com after creating a new app in your project.
 
 ```react
@@ -32,13 +32,13 @@ useEffect(() => {
 }, []);
 ```
 
-### Track the form
+### Step 2: Track the form
 
-4. Create your form.
-5. Add property "name" to your <form> tag.
+2-1. Create your form.
+2-2. Add property "name" to your <form> tag.
    - Note: Your form name must contains "signup" word, examples: "signup-form", "my-signup", ... .
    - Note: DO NOT USE SPACE OR DASH FOR "SIGNUP" (sign-up and sign up are not allowed)
-6. Add custom-attribute="include-form-tracking" to the form which you want to track.
+2-3. Add custom-attribute="include-form-tracking" to the form which you want to track.
 
 ```xml
 <form
@@ -48,7 +48,7 @@ useEffect(() => {
 </form>
 ```
 
-7. Add custom-attribute="include-content-tracking" to the input which you want to track its content.
+2-4. Add custom-attribute="include-content-tracking" to the input which you want to track its content.
    - NOTE: Your signup form must include an input with the name="email".
    - NOTE: You must add custom-attribute="include-content-tracking" for the email input
    - NOTE: Its ok to not including content of private fields like password, etc.
@@ -61,8 +61,8 @@ useEffect(() => {
 />
 ```
 
-8. Add custom-attribute="form-submit" or type="submit" to the submit button.
-9. Use onSubmit={submitHandler} for you button NOT onClick={clickHandler}.
+2-5. Add custom-attribute="form-submit" or type="submit" to the submit button.
+2-6. Use onSubmit={submitHandler} for you button NOT onClick={clickHandler}.
 
 ```xml
 <button custom-attribute="form-submit">submit</button>
