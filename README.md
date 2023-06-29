@@ -211,4 +211,4 @@ export default Form;
 ```
 
 Now go to dashboard and check if your signup submits are shown up in the "Registrations" menu.
-Congratulations! your done.
+Congratulations! you're done!
