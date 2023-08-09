@@ -34,6 +34,8 @@ componentDidMount(){
 ```
 
 ```javascript
+import { initXC } from "xc-sdk-react";
+
 // Functional Components
 useEffect(() => {
   initXC(your_site_id_from_app.crossclassify.com, your_api_key_from_app.crossclassify.com);
@@ -63,12 +65,16 @@ useEffect(() => {
 
   #### **Step 2.3:** Specify the form fields
   - Add custom-attribute="include-content-tracking" to the input which you want to track its content.
-    > **Important** <br>
-    > \- Signup (or login) form must include an input with the `name="email"`.<br>
-    > \- Must set `custom-attribute="include-content-tracking"` for email input.
-    
-    > **Note** <br>
-    > \- Sending field contents increases the accuracy of the CrossClassify fraud detection algorithm. Hence, content tracking is HIGHLY RECOMMENDED on all non-confidential fields.
+  
+    > **Important:** 
+    > Signup (or login) form must include an input with the `name="email"`.
+
+    > **Important:**
+    > Must set `custom-attribute="include-content-tracking"` for email input.
+
+    > **Note:** 
+    > Sending field contents increases the accuracy of the CrossClassify fraud detection algorithm. Hence, content tracking is HIGHLY RECOMMENDED on all non-confidential fields.
+
     ```html
     <input
       name="email"
@@ -80,7 +86,9 @@ useEffect(() => {
 
   #### **Step 2.4:** Specify submit button 
   - Add custom-attribute="form-submit" or type="submit" to the submit button.
-    > **Important** <br> Use onSubmit={submitHandler} for you button NOT onClick={clickHandler}.
+
+    > **Important:**
+    > Use onSubmit={submitHandler} for you button NOT onClick={clickHandler}.
 
     ```html
     <button custom-attribute="form-submit">submit</button>
@@ -227,5 +235,6 @@ Congratulations! You're done!
 #### Network:
   - Make sure that data transfers to CrossClassify with status 200 OK, on both page navigation and form submission.
     - Sometimes api-key missed to pass to `initXC` function and raised for 403!
-    - Sometimes form submit event has not been fired by clicking on form's submit button, Which mentioned to use `onSubmit` attribute.
+    - Make sure the form submit signal triggered when clicking on the submit button.
+    - Sometimes, form submit event are not fired by clicking on the form submit button.As mentioned before, use `onSubmit` attribute.
 
