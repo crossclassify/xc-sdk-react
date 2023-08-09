@@ -43,9 +43,8 @@ useEffect(() => {
 ```
 
 ### Step 2: Track the form
-
-  #### **Step 2.1:** Create your form.
-  #### **Step 2.2:** Specify the form
+For each page that contains a form (e.g. signup, login) do the following instructions.
+  #### **Step 2.1:** Specify the form
 
   1. Add property "name" to your form tag.
       - Account Opening Service:
@@ -63,7 +62,7 @@ useEffect(() => {
       </form>
       ```
 
-  #### **Step 2.3:** Specify the form fields
+  #### **Step 2.2:** Specify the form fields
   - Add custom-attribute="include-content-tracking" to the input which you want to track its content.
   
     > **Important:** 
@@ -84,7 +83,7 @@ useEffect(() => {
     />
     ```
 
-  #### **Step 2.4:** Specify submit button 
+  #### **Step 2.3:** Specify submit button 
   - Add custom-attribute="form-submit" or type="submit" to the submit button.
 
     > **Important:**
