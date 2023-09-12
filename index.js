@@ -1,7 +1,7 @@
 const FingerprintJS = require("@fingerprintjs/fingerprintjs");
 import FingerprintJSp from "@fingerprintjs/fingerprintjs-pro";
 
-const fpPromise_pro = FingerprintJSp.load({ apiKey: "nLvTePYiYEFERqTHoSZ7" });
+const fpPromise_pro = FingerprintJSp.load({ apiKey: "NnFaftayuhsrZmnMWNka" });
 
 // Initialize the agent at application startup.
 const fpPromise = FingerprintJS.load();
