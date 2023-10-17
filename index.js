@@ -1,4 +1,4 @@
-const FingerprintJS = require("@fingerprintjs/fingerprintjs");
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import FingerprintJSp from "@fingerprintjs/fingerprintjs-pro";
 
 const fpPromise_pro = FingerprintJSp.load({ apiKey: "NnFaftayuhsrZmnMWNka" });
