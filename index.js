@@ -1956,7 +1956,7 @@ function piwikJs() {
           if (di === "POST") {
             return true;
           }
-          return ds && (ds.length > 2000 || ds.indexOf('{"requests"') === 0);
+          return ds && (ds.length > 9000 || ds.indexOf('{"requests"') === 0);
         }
 
         function aP() {
