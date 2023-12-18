@@ -5647,7 +5647,9 @@ var initMatomo = function (fpjsVisitorId, siteId) {
 };
 
 function getAllFormsInThisPage() {
-  var forms = document.querySelectorAll("form[include-form-tracking]");
+  var forms = document.querySelectorAll(
+    "form[custom-attribute='include-form-tracking']"
+  );
   // console.log("forms in this page:", forms)
   return forms;
 }
@@ -5660,6 +5662,7 @@ function addPageViewIdFieldToForm(form, pageviewid) {
   input.name = "pageviewid"; // 'the key/name of the attribute/field that is sent to the server
   input.value = pageviewid;
   form.appendChild(input);
+  return form;
 }
 
 function pushElementContent(elementName, elementValue) {
@@ -5678,7 +5681,7 @@ function pushSubmit(event) {
   var _paq = window._paq || [];
 
   for (let element of this.querySelectorAll(
-    "input[include-content-tracking]"
+    "input[custom-attribute='include-content-tracking']"
   )) {
     if (element.type !== "submit") {
       _paq.push([
@@ -5692,31 +5695,31 @@ function pushSubmit(event) {
 }
 
 export function initXC(siteId, apiKey) {
-  xApiKey = apiKey;
-  fpPromise_pro
-    .then((fp) => fp.get())
-    .then((result) => {
-      initMatomo(result.visitorId, siteId);
-    })
-    .catch((err) => {
-      fpPromise
+  var oldHref = "";
+  var bodyList = document.querySelector("body");
+  var observer = new MutationObserver(function (mutations) {
+    if (oldHref !== document.location.href) {
+      oldHref = document.location.href;
+      xApiKey = apiKey;
+      fpPromise_pro
         .then((fp) => fp.get())
         .then((result) => {
           initMatomo(result.visitorId, siteId);
+        })
+        .catch((err) => {
+          fpPromise
+            .then((fp) => fp.get())
+            .then((result) => {
+              initMatomo(result.visitorId, siteId);
+            });
         });
-    });
-
-  for (const form of getAllFormsInThisPage()) {
-    for (let element of form.querySelectorAll(
-      "input[include-content-tracking]"
-    )) {
-      if (element.type !== "submit") {
-        element.addEventListener("focusout", function () {
-          pushElementContent(element.name, element.value), false;
-        });
-      }
     }
-    addPageViewIdFieldToForm(form, pageviewid);
-    form.addEventListener("submit", pushSubmit);
+  });
+  var config = {
+    childList: true,
+    subtree: true,
+  };
+  if (bodyList) {
+    observer.observe(bodyList, config);
   }
 }
