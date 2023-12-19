@@ -5695,6 +5695,14 @@ function pushSubmit(event) {
 }
 
 export function initXC(siteId, apiKey) {
+  if (!siteId) {
+    console.error("SiteId is NOT valid.")
+    return
+  }
+  if (!apiKey) {
+    console.error("apiKey is NOT valid.")
+    return
+  }
   var oldHref = "";
   var bodyList = document.querySelector("body");
   var observer = new MutationObserver(function (mutations) {
