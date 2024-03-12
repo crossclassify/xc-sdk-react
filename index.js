@@ -1,7 +1,7 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import FingerprintJSp from "@fingerprintjs/fingerprintjs-pro";
 
-const fpPromise_pro = FingerprintJSp.load({ apiKey: "NnFaftayuhsrZmnMWNka" });
+// const fpPromise_pro = FingerprintJSp.load({ apiKey: "NnFaftayuhsrZmnMWNka" });
 
 // Initialize the agent at application startup.
 const fpPromise = FingerprintJS.load();
@@ -5696,12 +5696,12 @@ function pushSubmit(event) {
 
 export function initXC(siteId, apiKey) {
   if (!siteId) {
-    console.error("SiteId is NOT valid.")
-    return
+    console.error("SiteId is NOT valid.");
+    return;
   }
   if (!apiKey) {
-    console.error("apiKey is NOT valid.")
-    return
+    console.error("apiKey is NOT valid.");
+    return;
   }
   var oldHref = "";
   var bodyList = document.querySelector("body");
@@ -5709,17 +5709,10 @@ export function initXC(siteId, apiKey) {
     if (oldHref !== document.location.href) {
       oldHref = document.location.href;
       xApiKey = apiKey;
-      fpPromise_pro
+      fpPromise
         .then((fp) => fp.get())
         .then((result) => {
           initMatomo(result.visitorId, siteId);
-        })
-        .catch((err) => {
-          fpPromise
-            .then((fp) => fp.get())
-            .then((result) => {
-              initMatomo(result.visitorId, siteId);
-            });
         });
     }
   });
