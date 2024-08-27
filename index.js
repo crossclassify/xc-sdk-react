@@ -6025,7 +6025,7 @@ async function developerModeValidation(siteId, apiKey) {
   forms.forEach(validateForm);
 }
 
-function initXC(siteId, apiKey, developerMode = false) {
+export function initXC(siteId, apiKey, developerMode = false) {
   var oldHref = "";
   var bodyList = document.querySelector("body");
   var observer = new MutationObserver(function (mutations) {
