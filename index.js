@@ -5686,15 +5686,346 @@ function pushSubmit(event) {
   }
 }
 
-export function initXC(siteId, apiKey) {
+const logo = "%c[CrossClassify]%c";
+const logoStyle = "font-weight: bold; color: #007bff;";
+const infoStyle = "color: #17a2b8;";
+const successStyle = "color: #28a745;";
+const warningStyle = "color: #ffc107;";
+const errorStyle = "color: #dc3545;";
+const timestampStyle = "color: #6c757d;";
+
+function logMessage(
+  level,
+  title,
+  text,
+  guideLink = "#",
+  step = "",
+  stepDesc = ""
+) {
+  const timestamp = new Date().toLocaleTimeString();
+  const formattedMessage = `${logo} %c${level}: ${title}%c\n%c${text}\nTime: ${timestamp}${
+    guideLink ? `\nGuide: ${guideLink}` : ""
+  }${step ? `\nStep ${step}: ${stepDesc}` : ""}`;
+  console.log(
+    formattedMessage,
+    logoStyle,
+    "",
+    getStyle(level),
+    "",
+    timestampStyle
+  );
+}
+
+function getStyle(level) {
+  switch (level) {
+    case "ERROR":
+      return errorStyle;
+    case "WARNING":
+      return warningStyle;
+    case "SUCCESS":
+      return successStyle;
+    case "INFO":
+    default:
+      return infoStyle;
+  }
+}
+
+function getCssSelector(element) {
+  let path = [];
+  while (element.parentNode) {
+    let selector = element.nodeName.toLowerCase();
+    if (element.id) {
+      selector += `#${element.id}`;
+      path.unshift(selector);
+      break;
+    } else {
+      let sib = element,
+        nth = 1;
+      while (
+        (sib = sib.previousElementSibling) &&
+        sib.nodeName.toLowerCase() === selector
+      )
+        nth++;
+      selector += nth > 1 ? `:nth-of-type(${nth})` : "";
+    }
+    path.unshift(selector);
+    element = element.parentNode;
+  }
+  return path.join(" > ");
+}
+
+function validateForm(form) {
+  logMessage(
+    "INFO",
+    "Form Validation Initiated",
+    "Starting form validation process...",
+    "",
+    "2",
+    "Scanning the form for required attributes."
+  );
+
+  if (!form) {
+    logMessage(
+      "ERROR",
+      "Form Not Detected",
+      "No form element found on the page.",
+      "",
+      "2.1",
+      "Ensure at least one form is present on the page."
+    );
+    return;
+  }
+
+  if (!/signup|login/i.test(form.name)) {
+    logMessage(
+      "WARNING",
+      "Form Name Warning",
+      "The form name does not contain 'signup' or 'login'.",
+      "",
+      "2.2",
+      "Please verify the form's name attribute."
+    );
+  } else {
+    logMessage(
+      "SUCCESS",
+      "Form Name Validated",
+      "The form name contains 'signup' or 'login'.",
+      "",
+      "2.2",
+      "Form name successfully validated."
+    );
+  }
+
+  if (
+    !form.hasAttribute("custom-attribute") ||
+    form.getAttribute("custom-attribute") !== "include-form-tracking"
+  ) {
+    logMessage(
+      "WARNING",
+      "Missing Custom Attribute",
+      "The form is missing the custom attribute 'custom-attribute=\"include-form-tracking\"'.",
+      "",
+      "2.3",
+      "Please verify the presence of custom attributes."
+    );
+  } else {
+    logMessage(
+      "SUCCESS",
+      "Custom Attribute Validated",
+      "The form contains the required custom attribute 'include-form-tracking'.",
+      "",
+      "2.3",
+      "Custom attribute successfully validated."
+    );
+  }
+
+  const inputs = form.querySelectorAll("input");
+
+  if (inputs.length === 0) {
+    logMessage(
+      "ERROR",
+      "No Input Fields Detected",
+      "The form does not contain any input fields.",
+      "",
+      "2.4",
+      "Ensure the form has at least one input field."
+    );
+    return;
+  }
+
+  const contentTrackingInputs = Array.from(inputs).filter(
+    (input) =>
+      input.hasAttribute("custom-attribute") &&
+      input.getAttribute("custom-attribute") === "include-content-tracking"
+  );
+
+  if (contentTrackingInputs.length === 0) {
+    logMessage(
+      "ERROR",
+      "Content Tracking Missing",
+      "No input fields have the required custom attribute 'include-content-tracking'.",
+      "",
+      "2.5",
+      "Please verify the input fields for content tracking attributes."
+    );
+  } else {
+    let isUserIdentifierInput = false;
+    logMessage(
+      "SUCCESS",
+      "Content Tracking Verified",
+      `Found ${contentTrackingInputs.length} input field(s) with the custom attribute 'include-content-tracking'.`,
+      "",
+      "2.5",
+      "Content tracking inputs successfully validated."
+    );
+    contentTrackingInputs.forEach((input, index) => {
+      logMessage(
+        "INFO",
+        `Input Field ${index + 1} Identified`,
+        `CSS Selector: ${getCssSelector(input)}`,
+        "",
+        "2.5",
+        "Inspecting the input field."
+      );
+      if (
+        input.getAttribute("name") === "username" ||
+        input.getAttribute("name") === "email"
+      ) {
+        isUserIdentifierInput = true;
+      }
+    });
+    if (!isUserIdentifierInput) {
+      logMessage(
+        "ERROR",
+        "Missing User Identifier",
+        "None of the input fields with the custom attribute 'include-content-tracking' are designated as 'username' or 'email'.",
+        "",
+        "2.5",
+        "Please verify the input fields for user identification."
+      );
+    }
+  }
+
+  const submitButton = form.querySelector(
+    "button[type='submit'], input[type='submit']"
+  );
+
+  if (!submitButton) {
+    logMessage(
+      "ERROR",
+      "Submit Button Not Found",
+      "The form does not contain a submit button.",
+      "",
+      "2.6",
+      "Ensure the form includes a submit button."
+    );
+  } else if (!form.hasAttribute("onsubmit")) {
+    logMessage(
+      "WARNING",
+      "Missing onSubmit Attribute",
+      "The form does not have an onsubmit attribute.",
+      "",
+      "2.7",
+      "Ensure the form includes an onsubmit attribute."
+    );
+  } else {
+    logMessage(
+      "SUCCESS",
+      "Submit Button Validated",
+      "The form includes a valid submit button with an onsubmit attribute.",
+      "",
+      "2.7",
+      "Submit button successfully validated."
+    );
+  }
+}
+
+async function validateSiteIdAndApiKey(siteId, apiKey) {
+  logMessage(
+    "INFO",
+    "Validating Credentials",
+    "Verifying the provided SiteId and ApiKey...",
+    "",
+    "1.1",
+    "Validating the provided credentials."
+  );
+
+  try {
+    const response = await fetch(
+      `https://api.crossclassify.com/v1/siteValidation/`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          x_api_key: apiKey,
+          site_id: siteId.toString(),
+        }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+        },
+      }
+    );
+    // Check if the response status is not OK
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status} - ${response.statusText}`
+      );
+    }
+    const data = await response.json(); // Parse the JSON response if needed
+    if (data.site_id && data.x_api_key && data.api_key_match) {
+      logMessage(
+        "SUCCESS",
+        "Credentials Verified",
+        "The SiteId and ApiKey are valid.",
+        "https://app.crossclassify.com",
+        "1.1",
+        "Credential validation was successful."
+      );
+    }
+    if (!data.site_id || !data.api_key_match) {
+      logMessage(
+        "ERROR",
+        "Validation Failed",
+        `Validation failed: The SiteId is either invalid or does not match with the provided ApiKey. Please verify your credentials under Panel > YourProject > Settings > YourApp.`,
+        "https://app.crossclassify.com",
+        "1.1",
+        "An error occurred during credential validation."
+      );
+    }
+  } catch (error) {
+    logMessage(
+      "ERROR",
+      "Validation Error",
+      `Validation failed: The provided ApiKey is invalid. Please verify your credentials under Panel > YourProject > Settings > YourApp.`,
+      "https://app.crossclassify.com",
+      "1.1",
+      "An error occurred during the validation process."
+    );
+  }
+}
+
+async function validateConfig(siteId, apiKey) {
   if (!siteId) {
-    console.error("SiteId is NOT valid.");
+    logMessage(
+      "ERROR",
+      "SiteId Missing",
+      "The SiteId cannot be empty. Please copy the value from Panel > YourProject > Settings > YourApp.",
+      "https://app.crossclassify.com",
+      "1.0",
+      "Ensure the SiteId is provided."
+    );
     return;
   }
   if (!apiKey) {
-    console.error("apiKey is NOT valid.");
+    logMessage(
+      "ERROR",
+      "ApiKey Missing",
+      "The ApiKey cannot be empty. Please copy the value from Panel > YourProject > Settings > YourApp.",
+      "https://app.crossclassify.com",
+      "1.0",
+      "Ensure the ApiKey is provided."
+    );
     return;
   }
+  logMessage(
+    "SUCCESS",
+    "Credentials Provided",
+    "Both ApiKey and SiteId are provided. Proceeding with validation.",
+    "",
+    "1.0",
+    "Configuration"
+  );
+  await validateSiteIdAndApiKey(siteId, apiKey);
+}
+
+async function developerModeValidation(siteId, apiKey) {
+  await validateConfig(siteId, apiKey);
+  const forms = document.querySelectorAll("form");
+  forms.forEach(validateForm);
+}
+
+function initXC(siteId, apiKey, developerMode = false) {
   var oldHref = "";
   var bodyList = document.querySelector("body");
   var observer = new MutationObserver(function (mutations) {
@@ -5704,6 +6035,33 @@ export function initXC(siteId, apiKey) {
       fpPromise
         .then((fp) => fp.get())
         .then((result) => {
+          if (developerMode) {
+            logMessage(
+              "INFO",
+              "--------CROSSCLASSIFY--------",
+              "Unmatched security for your applications with seamless integration.",
+              "https://www.crossclassify.com/",
+              "",
+              ""
+            );
+            logMessage(
+              "INFO",
+              "------[SDK--VALIDATION]------",
+              "Welcome to the step-by-step SDK integration guide. We’re here to assist you through each phase, ensuring you have all the necessary information and support. Each step includes a title, description, and a link to additional resources for deeper understanding or troubleshooting. Let’s begin!",
+              "https://www.crossclassify.com/developers/web/",
+              "",
+              ""
+            );
+            logMessage(
+              "INFO",
+              "------[1:CONFIGURATION]------",
+              "First, we will validate the 'siteId' and 'apiKey' with our system.",
+              "",
+              "1",
+              "Configuration"
+            );
+            developerModeValidation(siteId, apiKey);
+          }
           initMatomo(result.visitorId, siteId);
         });
     }
