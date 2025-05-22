@@ -1986,7 +1986,15 @@ function piwikJs() {
                 "Content-Type":
                   "application/x-www-form-urlencoded; charset=UTF-8",
               },
-            });
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  console.warn("Tracking request failed:", response.statusText);
+                }
+              })
+              .catch((err) => {
+                console.debug("Tracking fetch error (ignored):", err);
+              });
           } catch (dx) {
             return false;
           }
@@ -6025,7 +6033,16 @@ async function developerModeValidation(siteId, apiKey) {
   forms.forEach(validateForm);
 }
 
+function isBot() {
+  const ua = navigator.userAgent.toLowerCase();
+  return /bot|crawler|spider|crawling/.test(ua) || navigator.webdriver;
+}
+
 export function initXC(siteId, apiKey, developerMode = false) {
+  if (isBot()) {
+    console.debug('Bot detected – skipping CrossClassify tracking');
+    return;
+  }
   var oldHref = "";
   var bodyList = document.querySelector("body");
   var observer = new MutationObserver(function (mutations) {
@@ -6047,7 +6064,7 @@ export function initXC(siteId, apiKey, developerMode = false) {
             logMessage(
               "INFO",
               "------[SDK--VALIDATION]------",
-              "Welcome to the step-by-step SDK integration guide. We’re here to assist you through each phase, ensuring you have all the necessary information and support. Each step includes a title, description, and a link to additional resources for deeper understanding or troubleshooting. Let’s begin!",
+              "Welcome to the step-by-step SDK integration guide. We're here to assist you through each phase, ensuring you have all the necessary information and support. Each step includes a title, description, and a link to additional resources for deeper understanding or troubleshooting. Let's begin!",
               "https://www.crossclassify.com/developers/web/",
               "",
               ""
