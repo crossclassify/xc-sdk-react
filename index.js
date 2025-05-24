@@ -6040,9 +6040,17 @@ function isBot() {
 
 export function initXC(siteId, apiKey, developerMode = false) {
   if (isBot()) {
-    console.debug('Bot detected – skipping CrossClassify tracking');
+    logMessage(
+      "INFO",
+      "--------CROSSCLASSIFY--------",
+      "Bot detected – skipping CrossClassify tracking",
+      "https://www.crossclassify.com/",
+      "",
+      ""
+    );
     return;
   }
+  
   var oldHref = "";
   var bodyList = document.querySelector("body");
   var observer = new MutationObserver(function (mutations) {
